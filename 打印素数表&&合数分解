@@ -15,8 +15,8 @@ void getPrime()
     }
 }
 //合数分解（前面需要先素数筛选）
-long long factor[100][2];//factor[fatCnt][0]记录约数,factor[fatCnt][1]记录约数‘factor[fatCnt][0]’个数
-int fatCnt;//fatCnt的值表示约数种类
+long long factor[100][2];//factor[fatCnt][0]记录目前最小整除数,factor[fatCnt][1]记录‘factor[fatCnt][0]’个数
+int fatCnt;//fatCnt的值表示整除数种类
 int getFactors(long long x)
 {
     fatCnt=0;
