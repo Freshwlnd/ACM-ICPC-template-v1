@@ -16,7 +16,7 @@ void dijkstra(int node,int n) {
 		}
 		visit[pos] = 1;
 		for (j = 0; j < n; j++) {
-if (visit[j] == 0 && distance[node][j] > distance[node][pos] + distance[pos][j]) {
+			if (visit[j] == 0 && distance[node][j] > distance[node][pos] + distance[pos][j]) {
 				distance[node][j] = distance[node][pos] + distance[pos][j];
 			}
 		}
