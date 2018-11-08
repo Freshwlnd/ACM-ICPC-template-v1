@@ -1,4 +1,4 @@
-const int maxn=40005;
+const int maxn=100005;
 ll tree[2][maxn];
 
 //无法处理0,返回最低位1对应的值,如12即1100返回二进制100即4
