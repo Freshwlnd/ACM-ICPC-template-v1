@@ -33,7 +33,7 @@ int main()
             cin>>weight[i];
         }
         for(int i=1;i<=n;++i){
-            for(int j=v;j>=weight[i];j--){
+            for(int j=v;j>=weight[i];j--){//反向遍历是因为需要记录i-1状态下的sum值，若正向遍历该状态会被破坏
                 sum[j]=max(sum[j],sum[j-weight[i]]+value[i]);
             }
         }
