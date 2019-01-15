@@ -1,5 +1,7 @@
 # acm_study
 模板
+
+```
 //头文件+预处理
 #include<iostream>
 #include<cstdlib>
@@ -19,3 +21,4 @@
 #define nfor(a,b,c) for(int a=b;a>=c;--a)
 
 const ll maxn=10005;
+```
