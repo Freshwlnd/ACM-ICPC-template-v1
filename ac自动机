@@ -1,0 +1,139 @@
+#include<iostream>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+
+#include<string>
+#include<vector>
+#include<map>
+#include<set>
+#include<queue>
+#include<stack>
+
+#define ll long long
+#define myfor(c,a,b) for(int c=a;a<=b?c<=b:c>=b;a<=b?++c:--c)
+#define upfor(a,b,c) for(int a=b;a<=c;++a)
+#define downfor(a,b,c) for(int a=b;a>=c;--a)
+
+using namespace std;
+const ll maxn=1005;
+int n,m;
+
+const int kind = 26;
+struct node
+{
+    node *fail;       //失败指针
+    node *next[kind]; //Tire每个节点的个子节点（最多个字母）
+    int number;        //是否为该单词的最后一个节点
+    node()            //构造函数初始化
+    {
+        fail=NULL;
+        number=0;
+        myfor(i,0,25){
+            next[i]=NULL;
+        }
+    }
+};
+queue<node*> q;        //队列，方便用于bfs构造失败指针
+char keyword[51];     //输入的单词
+char str[1000001];    //模式串
+
+void insert(char *str,node *root){
+    node *p=root;
+    int i=0,index;
+    while(str[i])
+    {
+        index=str[i]-'a';
+        if(p->next[index]==NULL)
+            p->next[index]=new node();
+        p=p->next[index];
+        i++;
+    }
+    p->number++;     //在单词的最后一个节点number+1，代表一个单词
+}
+//创建fail指针
+ void build_ac_automation(node *root){
+    int i;
+    root->fail=NULL;
+    q.push(root);
+    while(!q.empty())
+    {
+        node *temp=q.front();
+        q.pop();
+        node *p=NULL;
+        for(i=0; i<26; i++)
+        {
+            if(temp->next[i]!=NULL)
+            {
+                if(temp==root) temp->next[i]->fail=root;
+                else
+                {
+                    p=temp->fail;
+                    while(p!=NULL)
+                    {
+                        if(p->next[i]!=NULL)
+                        {
+                            temp->next[i]->fail=p->next[i];
+                            break;
+                        }
+                        p=p->fail;
+                    }
+                    if(p==NULL) temp->next[i]->fail=root;
+                }
+                q.push(temp->next[i]);
+            }
+        }
+    }
+}
+//对str字符串进行查询，可查询str中包含的单词数量
+ int query(node *root){
+    int i=0,cnt=0,index,len=strlen(str);
+    node *p=root;
+    while(str[i])
+    {
+        index=str[i]-'a';
+        while(p->next[index]==NULL && p!=root) p=p->fail;
+        p=p->next[index];
+        p=(p==NULL)?root:p;
+        node *temp=p;
+        while(temp!=root && temp->number!=-1)
+        {
+            cnt+=temp->number;
+            temp->number=-1;
+            temp=temp->fail;
+        }
+        i++;
+    }
+    return cnt;
+}
+//清理内存，若时间不足无需清理。
+void free(node *root){
+    if(root==NULL)
+        return;
+    myfor(i,0,25){
+        free(root->next[i]);
+    }
+    delete root;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    int t,n;
+    node *root;
+    cin>>t;
+    while(t--){
+        root=new node();
+        cin>>n;
+        myfor(i,1,n){
+            cin>>keyword;
+            insert(keyword,root);
+        }
+        cin>>str;
+        build_ac_automation(root);
+        int tmp = query(root);
+        cout<<tmp<<endl;
+        free(root);
+    }
+    return 0;
+}
+//用于处理单字符串的多单词查询。即查询一个长字符串中出现了字典树中单词的数量。
