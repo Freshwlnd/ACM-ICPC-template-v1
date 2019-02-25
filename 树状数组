@@ -6,7 +6,7 @@ ll lowbit(ll x){
     return x&(-x);
 }
 //单点修改
-void updata(ll x, ll value){//x表示修改点的下标，然后不断向上更新
+void update(ll x, ll value){//x表示修改点的下标，然后不断向上更新
     if(x<1)
         return;
     while(x<=20000){
